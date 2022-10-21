@@ -1,21 +1,21 @@
 import netmiko
 import getpass
 
+
 NetworkInfo = {
      'device_type':'',
-     'domain':'192.168.1.1',
+     'host':'192.168.56.101',
      'username':'cisco',
      'password':'',
      'secret':''
 }
-
 print('** Script information **')
-NetworkInfo["Password"] = getpass.getpass("Type device Password")
-NetworkInfo["Secret"] = getpass.getpass("Type device Secret")
+NetworkInfo["password"] = getpass.getpass("Type device Password")
+NetworkInfo["secret"] = getpass.getpass("Type device Secret")
 NetworkType = input("Do you want to connect to SSH (1) or Connect to Telnet (2)?")
 if NetworkType == "1":
     NetworkInfo["device_type"] = "cisco_ios"
-    session = netmiko.connectHandler(**NetworkInfo)
+    session = netmiko.ConnectHandler(**NetworkInfo)
     session.enable()
     commandOutput = session.send_command('show running-config')
     file = open("config.txt", "w")
@@ -23,7 +23,7 @@ if NetworkType == "1":
     file.close()
     print ('*** Connection Sucessful***')
 elif NetworkType == "2":
-    NetworkInfo['Device_type'] = 'cisco_ios_telnet'
+    NetworkInfo['device_type'] = 'cisco_ios_telnet'
     session = netmiko.ConnectHandler(**NetworkInfo)
     session.enable()
     print(session.send_command('sh ip int br'))
