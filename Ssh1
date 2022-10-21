@@ -1,0 +1,23 @@
+teportneterko
+pinport getpass
+connectioninto =
+"host: 192.168 1-1
+'username: CISCO
+secret
+Device connection script
+'ol password = getpass.getpass("Enter devict,
+connectioninfo/secreti
+getpass. getpass("Enter device silne con
+yOu
+connect via SSH (h tine veroes:
+connectionInfo device type] =
+-Cisco sios
+session = netaiko.Connecthandler**connectioninfo
+session.enablet)
+print(session. send command( ship int br'))
+eat connection ype=3
+connectionInfoldevice type ] =
+"cisco dos telnet
+session = netmiko.Connecthandler(**connectioninfo)
+session enablel)
+print(session. send command("ship int br)
