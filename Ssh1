@@ -1,6 +1,11 @@
 import netmiko
 import getpass
+import difflib
 
+varOne = "config"
+varTwo = "connect"
+arrOne = "disconnect"
+arrTwo = "configTwo"
 
 NetworkInfo = {
      'device_type':'',
@@ -29,3 +34,15 @@ elif NetworkType == "2":
     print(session.send_command('sh ip int br'))
 else:
      exit()
+
+
+runningconf = session.send_command("sh run")
+
+diffs = difflib.unified_diff(varOne, varTwo, n=0)
+diffs = difflib.ndiff(arrOne, arrTwo)
+
+for diff in diffs:
+    print(diff)
+
+with open('a.txt'):
+    exit()
