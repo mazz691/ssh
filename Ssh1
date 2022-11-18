@@ -1,18 +1,14 @@
-import netmiko
-import getpass
-import difflib
+import netmiko #SSH
+import getpass #Passwords
+import difflib #Differences
 
-varOne = "config"
-varTwo = "connect"
-arrOne = "disconnect"
-arrTwo = "configTwo"
-
+#network information including username, password and secret
 NetworkInfo = {
      'device_type':'',
      'host':'192.168.56.101',
      'username':'cisco',
-     'password':'',
-     'secret':''
+     'password':'cisco123!',
+     'secret':'class123!'
 }
 print('** Script information **')
 NetworkInfo["password"] = getpass.getpass("Type device Password")
@@ -22,11 +18,26 @@ if NetworkType == "1":
     NetworkInfo["device_type"] = "cisco_ios"
     session = netmiko.ConnectHandler(**NetworkInfo)
     session.enable()
-    commandOutput = session.send_command('show running-config')
+    runConf = session.send_command("sh running-conf")
+    offConf = session.send_command("sh startup-conf")
     file = open("config.txt", "w")
-    file.write(commandOutput)
+    file.write(offConf)
     file.close()
     print ('*** Connection Sucessful***')
+
+#option X is for offline file
+print("config has been successful")
+choice = input("choose option X if you would like the offline version or choose Y if you would want the online version")
+if choice =="X":
+     backupfile = open("config.txt", "r")
+     for diff in difflib.context_diff(runConf.split("\n"), backupfile.readline()):
+          print(diff)
+#option Y is for online file
+elif choice == "Y":
+     for diff in difflib.context_diff(runConf.split("\n"), offConf.split("\n")):
+          print(diff)
+   
+#option 2 for Telnet
 elif NetworkType == "2":
     NetworkInfo['device_type'] = 'cisco_ios_telnet'
     session = netmiko.ConnectHandler(**NetworkInfo)
@@ -34,33 +45,4 @@ elif NetworkType == "2":
     print(session.send_command('sh ip int br'))
 else:
      exit()
-
-
-runningconf = session.send_command("sh run")
-
-diffs = difflib.unified_diff(varOne, varTwo, n=0)
-diffs = difflib.ndiff(arrOne, arrTwo)
-
-for diff in diffs:
-    print(diff)
-
-with open('a.txt'):
-    exit()
-backupfile = open("config-output.txt", "r")
-
-print("config has been successful")
-choice = input("choose A to compare against current startup configuration or choose B to compare against local offline
-
-if choice == "A":
-     for diff in difflib.context_diff(config.split("\n"), startup_config.split("\n")):
-          print(diff)
-          
-for diff in difflib.context_diff(config.split("\n"), startup_config.split("\n"):
-     print(diff)
-     
-for diff in difflib.context_diff(config.split("\n"), backupfile. readline()):
-     print(diff)
-elif choice =="B":
-     backupfile = open("config-output.txt", "r")
-     for diff in difflib.context_diff(config.split("\n"), backupfile.readline()):
-          print(diff) 
+#py file ends here
